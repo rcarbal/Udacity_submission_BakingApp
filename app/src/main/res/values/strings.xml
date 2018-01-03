@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Backing App</string>
+
+    //Recipe card holder string
+    <string name="ph_text" translatable="false" >Place holder text</string>
+
+    //String for adaptor
+    <string name="ingredient">Ingredents</string>
+
+    //Button Strings
+    <string name="next_step">Next Step</string>
+    <string name="previous_step">Previous Step</string>
+
+    //MainActivity transition names
+    <string name="selected_photo" translatable="false">selected_photo</string>
 </resources>
