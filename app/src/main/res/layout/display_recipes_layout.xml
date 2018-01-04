@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -10,15 +9,27 @@
         android:layout_height="wrap_content"
         android:transitionName="@string/selected_photo"
         android:id="@+id/detail_recipe_photo"
+        android:scaleType="centerInside"/>
 
-        />
-    <android.support.v7.widget.RecyclerView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rv_single_recipe">
+        android:paddingTop="350dp"
+                >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:elevation="8dp">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rv_single_recipe">
 
+        </android.support.v7.widget.RecyclerView>
 
+        </LinearLayout>
 
-</LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</FrameLayout>

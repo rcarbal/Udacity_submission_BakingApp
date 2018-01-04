@@ -11,7 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.example.rcarb.backingapp.LoadersAndAsyncTasks.SetupChildRecipeAsyncTaskLoader;
 import com.example.rcarb.backingapp.UserInterface.SingleRecipeDetailAdaptor;
@@ -36,6 +38,7 @@ public class DisplayRecipesActivity extends AppCompatActivity
     private ImageView mImageView;
 
 
+
     //Loader Id for the initial RecyclerView loader
     private final static int LOAD_RECYCLER_VIEW_LOADER = 10;
     @Override
@@ -44,15 +47,19 @@ public class DisplayRecipesActivity extends AppCompatActivity
         setContentView(R.layout.display_recipes_layout);
 
         mImageView = findViewById(R.id.detail_recipe_photo);
+
         //Get the recyclerview
         mRecyclerView = findViewById(R.id.rv_single_recipe);
         //It will not change size
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setNestedScrollingEnabled(false);
+
         //Set the layout manager.
         mLayoutManager = new LinearLayoutManager(this);
 
         //Attach the layout manager to the recyclerview
         mRecyclerView.setLayoutManager(mLayoutManager);
+
         //Extract the intent data.
         mRecipeId = getIntentData();
         //initiate the loader for the RecyclerView.
@@ -127,7 +134,6 @@ public class DisplayRecipesActivity extends AppCompatActivity
                 //Setup the Adaptor to the recyclerview.
                 RecyclerView.Adapter adapter= new SingleRecipeDetailAdaptor(data, DisplayRecipesActivity.this);
                 mRecyclerView.setAdapter(adapter);
-
             }
 
             @Override
@@ -160,5 +166,6 @@ public class DisplayRecipesActivity extends AppCompatActivity
     }
 
 // <---------------------Loader calbacks end ---------------------->
+
 
 }
