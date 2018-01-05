@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 
 import com.example.rcarb.backingapp.LoadersAndAsyncTasks.GetIngredientsAsyncTaskLoader;
 import com.example.rcarb.backingapp.UserInterface.SetIngredientsAdaptor;
@@ -25,6 +26,7 @@ public class PresentIngredientsActivity extends AppCompatActivity {
     //RecyclerView
     RecyclerView mRecyclerView;
     LinearLayoutManager mLayoutManager;
+    ImageView mImageView;
 
     private static final int LOAD_RECYCLER_INGREDIENTS_LOADER = 7;
 
@@ -35,8 +37,10 @@ public class PresentIngredientsActivity extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.ingredients_rv);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setNestedScrollingEnabled(false);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mImageView = findViewById(R.id.ingredients_layout_imageview);
 
 
         getIntentData();
@@ -48,6 +52,24 @@ public class PresentIngredientsActivity extends AppCompatActivity {
         mRecipeTitle = extras.getString("recipe_title", "Recipe");
         mREcipeId = extras.getInt("recipe_id");
         setTitle(mRecipeTitle+ ": Ingredients");
+
+        switch (mRecipeTitle){
+            case "Nutella Pie":
+                mImageView.setImageResource(R.drawable.nutellapie);
+                break;
+            case "Brownies":
+                mImageView.setImageResource(R.drawable.brownies);
+                break;
+            case "Yellow Cake":
+                mImageView.setImageResource(R.drawable.yellow_cake);
+                break;
+            case "Cheesecake":
+                mImageView.setImageResource(R.drawable.cheesecake);
+                break;
+            default:
+                mImageView.setImageResource(R.drawable.no_picture);
+                break;
+        }
     }
 
     //Parses the databse for the ingredients

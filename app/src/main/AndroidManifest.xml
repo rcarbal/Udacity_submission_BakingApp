@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation|screenSize"
             >
 
             <intent-filter>
@@ -27,9 +29,10 @@
         <activity android:name=".DisplayRecipesActivity"
             android:launchMode="singleTop"
             />
-        <activity android:name=".RecipeDetailsActivity"/>
+        <activity android:name=".RecipeStepDetailsActivity"/>
 
         <activity android:name=".PresentIngredientsActivity"
+            android:launchMode="singleTop"
             />
 
         <provider

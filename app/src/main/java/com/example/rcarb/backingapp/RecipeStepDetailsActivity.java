@@ -2,12 +2,11 @@ package com.example.rcarb.backingapp;
 
 import android.annotation.SuppressLint;
 import android.app.LoaderManager;
-import android.content.Intent;
 import android.content.Loader;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,16 +18,12 @@ import com.example.rcarb.backingapp.LoadersAndAsyncTasks.GetRecipeStepsLoader;
 import com.example.rcarb.backingapp.Utilities.RecipeStepsSub;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.dash.DashChunkSource;
-import com.google.android.exoplayer2.source.dash.DashMediaSource;
-import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
@@ -44,19 +39,20 @@ import java.util.ArrayList;
  * Created by rcarb on 12/25/2017.
  */
 
-public class RecipeDetailsActivity extends AppCompatActivity {
+public class RecipeStepDetailsActivity extends AppCompatActivity {
 
     RecipeStepsSub mCurrentStep;
     private String mRecipeTitle;
     private int mRecipeId;
-
     int mStepId;
     int mIndexOfStep;
-    ArrayList<RecipeStepsSub> mStoredSteps;
+    int mSizedOfArray;
     private boolean haveParsed;
     //If there is no more steps
     private boolean mHasNextStep;
     private boolean mHasPrevious;
+
+    ArrayList<RecipeStepsSub> mStoredSteps;
 
 
     //Loader variable
@@ -78,6 +74,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     Button mNextButton;
     Button mPreviousButton;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,8 +94,50 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         //Setup Ui
         setupUi();
         parseForSteps();
+        setButtons();
+    }
+ //   RecipeStepsSub mCurrentStep;
+//    private String mRecipeTitle;
+//    private int mRecipeId;
+//    int mStepId;
+//    int mIndexOfStep;
+//    int mSizedOfArray;
+//    private boolean haveParsed;
+//    //If there is no more steps
+//    private boolean mHasNextStep;
+//    private boolean mHasPrevious;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("mCurrentStep", mCurrentStep);
+        outState.putString("mRecipeTitle", mRecipeTitle);
+        outState.putInt("mRecipeId", mRecipeId);
+        outState.putInt("mStepId", mStepId);
+        outState.putInt("mIndexOfStep", mIndexOfStep);
+        outState.putInt("sizeSteps", mSizedOfArray);
+        outState.putBoolean("next", mHasNextStep);
+        outState.putBoolean("previous",mHasPrevious);
+        super.onSaveInstanceState(outState);
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mCurrentStep = savedInstanceState.getParcelable("mCurrentStep");
+            mRecipeTitle = savedInstanceState.getString("mRecipeTitle");
+            mRecipeId = savedInstanceState.getInt("mRecipeId");
+            mStepId = savedInstanceState.getInt("mStepId");
+            mIndexOfStep = savedInstanceState.getInt("mIndexOfStep");
+            mSizedOfArray = savedInstanceState.getInt("sizeSteps");
+            mHasNextStep = savedInstanceState.getBoolean("next");
+            mHasPrevious = savedInstanceState.getBoolean("previous");
+            mNextButton.setClickable(mHasNextStep);
+            mPreviousButton.setClickable(mHasPrevious);
+            super.onRestoreInstanceState(savedInstanceState);
+            setupUi();
+
+        }
+    }
 
     //Gets the passed in intent
     private RecipeStepsSub getIntentsInfo() {
@@ -159,6 +198,31 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         return -1;
     }
 
+    private void setButtons(){
+        int getTotalStepIndex = mStoredSteps.size() - 1;
+
+        mIndexOfStep = getIndexOfCurrentStep();
+        //Set if there is next step
+        if (mIndexOfStep < getTotalStepIndex) {
+            mHasNextStep = true;
+            mNextButton.setClickable(true);
+        } else if (mIndexOfStep == getTotalStepIndex) {
+            mHasNextStep = false;
+            mNextButton.setClickable(false);
+        }
+
+        //Set if there is previous step.
+        if (mIndexOfStep > 0) {
+            mHasPrevious = true;
+            mPreviousButton.setClickable(true);
+        } else if (mIndexOfStep == 0) {
+            mHasPrevious = false;
+            mPreviousButton.setClickable(false);
+        }
+
+
+    }
+
     //Releases the Player
     private void releasePlayer() {
         if (mPlayer != null) {
@@ -213,7 +277,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     //On button click goes to next step
     public void nextStep(View view) {
         if (mHasNextStep) {
-           if (mIndexOfStep < mStoredSteps.size()){
+           if (mIndexOfStep < mSizedOfArray){
                 //Clear the player
                 clearPlayer();
                 //Get the next index
@@ -228,7 +292,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                mIndexOfStep = getIndexOfCurrentStep();
 
                //If reach end disable the next button.
-               if (mCurrentStep.getIdSteps() == mStoredSteps.get(mStoredSteps.size() - 1).getIdSteps()) {
+               if (mCurrentStep.getIdSteps() == mStoredSteps.get(mSizedOfArray - 1).getIdSteps()) {
                     mHasNextStep = false;
                     mNextButton.setClickable(false);
                 }
@@ -264,7 +328,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             mNextButton.setClickable(true);
         }
         //If index is less than the total index.
-        if (mIndexOfStep != mStoredSteps.size()-1){
+        if (mIndexOfStep != mSizedOfArray){
             //Has next
             mHasNextStep = true;
             mNextButton.setClickable(true);
@@ -327,40 +391,20 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             new LoaderManager.LoaderCallbacks<ArrayList<RecipeStepsSub>>() {
                 @Override
                 public Loader<ArrayList<RecipeStepsSub>> onCreateLoader(int id, Bundle args) {
-                    return new GetRecipeStepsLoader(RecipeDetailsActivity.this,
+                    return new GetRecipeStepsLoader(RecipeStepDetailsActivity.this,
                             mRecipeId);
                 }
 
                 @Override
                 public void onLoadFinished(Loader<ArrayList<RecipeStepsSub>> loader, ArrayList<RecipeStepsSub> data) {
                     if (data == null) {
-                        Toast.makeText(RecipeDetailsActivity.this, "All steps not saved.",
+                        Toast.makeText(RecipeStepDetailsActivity.this, "All steps not saved.",
                                 Toast.LENGTH_SHORT).show();
                     }
                     mStoredSteps = data;
                     haveParsed = true;
-                    int getTotalStepIndex = mStoredSteps.size() - 1;
-
-                    mIndexOfStep = getIndexOfCurrentStep();
-                    //Set if there is next step
-                    if (mIndexOfStep < getTotalStepIndex) {
-                        mHasNextStep = true;
-                        mNextButton.setClickable(true);
-                    } else if (mIndexOfStep == getTotalStepIndex) {
-                        mHasNextStep = false;
-                        mNextButton.setClickable(false);
-                    }
-
-                    //Set if there is previous step.
-                    if (mIndexOfStep > 0) {
-                        mHasPrevious = true;
-                        mPreviousButton.setClickable(true);
-                    } else if (mIndexOfStep == 0) {
-                        mHasPrevious = false;
-                        mPreviousButton.setClickable(false);
-                    }
-
-                    String a = "";
+                    mSizedOfArray = mStoredSteps.size();
+                    setButtons();
 
                 }
 

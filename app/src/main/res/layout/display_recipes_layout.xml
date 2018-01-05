@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:transitionName="@string/selected_photo"
         android:id="@+id/detail_recipe_photo"
-        android:scaleType="centerInside"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:transitionName="@string/selected_photo" />
+
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="350dp"
-                >
+        android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:elevation="8dp">
+            android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rv_single_recipe">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
 
-        </android.support.v7.widget.RecyclerView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
+                android:elevation="8dp"
+                android:orientation="vertical">
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_single_recipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
         </LinearLayout>
+
 
     </android.support.v4.widget.NestedScrollView>
 </FrameLayout>

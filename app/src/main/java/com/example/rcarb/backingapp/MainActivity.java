@@ -67,6 +67,7 @@ public class MainActivity
     ArrayList<RecipeInfoParent> mRecipes;
 
     private Parcelable mLayoutState;
+    RecyclerView.Adapter mAdaptor;
 
 
     @Override
@@ -110,14 +111,6 @@ public class MainActivity
         Toast.makeText(this, "onSavedInstance", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState!= null){
-            mLayoutState = savedInstanceState.getParcelable(SAVED_LAYOUT_MANAGER);
-        }
-        Toast.makeText(this, "onRestoreInstanceState", Toast.LENGTH_SHORT).show();
-    }
 
     //Checks to see if a contract already exists
     private boolean checkDataBaseExists() {
@@ -150,6 +143,7 @@ public class MainActivity
 
     @Override
     public void onLoadFinished(Loader<Boolean> loader, Boolean data) {
+        Boolean hasConnection = data;
         if (data) {
             getLoaderManager().initLoader(GET_JSON_DATA, null, getJsonCallbacks);
         } else if (!data) {
@@ -217,8 +211,8 @@ public class MainActivity
                     if (data == null) {
                         //TODO is cursor is null
                     }
-                    RecyclerView.Adapter adapter = new MainRecipeAdaptor(data, MainActivity.this);
-                    mRecyclerView.setAdapter(adapter);
+                    mAdaptor =new MainRecipeAdaptor(data, MainActivity.this);
+                    mRecyclerView.setAdapter(mAdaptor);
                 }
 
                 @Override

@@ -1,6 +1,7 @@
 package com.example.rcarb.backingapp;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
@@ -11,9 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.example.rcarb.backingapp.LoadersAndAsyncTasks.SetupChildRecipeAsyncTaskLoader;
 import com.example.rcarb.backingapp.UserInterface.SingleRecipeDetailAdaptor;
@@ -134,6 +133,7 @@ public class DisplayRecipesActivity extends AppCompatActivity
                 //Setup the Adaptor to the recyclerview.
                 RecyclerView.Adapter adapter= new SingleRecipeDetailAdaptor(data, DisplayRecipesActivity.this);
                 mRecyclerView.setAdapter(adapter);
+
             }
 
             @Override
@@ -146,22 +146,28 @@ public class DisplayRecipesActivity extends AppCompatActivity
     public void onItemClicked(RecipeStepsSub recipe, int position) {
 
         if (position == 0){
+            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
+                    this,
+                    mImageView,
+                    mImageView.getTransitionName()).toBundle();
             Intent intent = new Intent(DisplayRecipesActivity.this,
                     PresentIngredientsActivity.class);
             intent.putExtra("recipe_title", mRecipeTitle);
             intent.putExtra("recipe_id", mRecipeId);
-            startActivity(intent);
+            startActivity(intent, bundle);
         }else {
 
             RecipeStepsSub res = recipe;
+            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
+                    this).toBundle();
 
             Intent intent = new Intent(DisplayRecipesActivity.this,
-                    RecipeDetailsActivity.class);
+                    RecipeStepDetailsActivity.class);
             //Puts parceble into intent.
             intent.putExtra("step_info", res);
             intent.putExtra("recipe_title", mRecipeTitle);
             intent.putExtra("recipe_id", mRecipeId);
-            startActivity(intent);
+            startActivity(intent, bundle);
         }
     }
 

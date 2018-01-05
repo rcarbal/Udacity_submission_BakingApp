@@ -7,9 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowExitTransition">
-            @transition/layout_exit</item>
+            @android:transition/slide_left</item>
         <item name="android:windowReenterTransition">
-            @android:transition/slide_top</item>
+            @android:transition/slide_left</item>
+        <item name="android:windowEnterTransition">
+            @android:transition/slide_right</item>
     </style>
 
 </resources>
