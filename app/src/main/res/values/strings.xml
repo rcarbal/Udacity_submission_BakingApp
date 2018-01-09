@@ -2,7 +2,7 @@
     <string name="app_name">Backing App</string>
 
     //Recipe card holder string
-    <string name="ph_text" translatable="false" >Place holder text</string>
+    <string name="ph_text" translatable="false">Place holder text</string>
 
     //String for adaptor
     <string name="ingredient">Ingredents</string>
@@ -13,4 +13,6 @@
 
     //MainActivity transition names
     <string name="selected_photo" translatable="false">selected_photo</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

@@ -17,6 +17,7 @@ import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -62,42 +63,50 @@ public class MainActivity
     RecyclerView mRecyclerView;
     //Layout Manager
     LinearLayoutManager mLayoutManager;
-
-    boolean mDatabase = false;
-    ArrayList<RecipeInfoParent> mRecipes;
-
+    private boolean mDatabase = false;
+    private ArrayList<RecipeInfoParent> mRecipes;
     private Parcelable mLayoutState;
     RecyclerView.Adapter mAdaptor;
+    private boolean mTwoPane;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mLayoutState = new Bundle();
-        Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
+        //Check if the device is a tablet.
+        if (findViewById(R.id.framelayout_tablet)!= null){
+            mTwoPane = true;
+            mLayoutManager = new GridLayoutManager(this, 2);
+        }else {
+            //Set the layout manager.
+            mLayoutManager = new LinearLayoutManager(this);
+            mTwoPane = false;
+        }
 
-        //Broadcast receiver instantiate
-        mDatabaseReadyReciever = new DatabaseReadyReceiver();
 
-        //intent filter and set action
-        mDatabseReadyIntentFilter = new IntentFilter();
+            mLayoutState = new Bundle();
+            // Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
 
-        mDatabseReadyIntentFilter.addAction("database-ready");
+            //Broadcast receiver instantiate
+            mDatabaseReadyReciever = new DatabaseReadyReceiver();
 
-        //Get the recyclerview
-        mRecyclerView = findViewById(R.id.recycler_view);
-        //It will not change size
-        mRecyclerView.setHasFixedSize(true);
-        //Set the layout manager.
-        mLayoutManager = new LinearLayoutManager(this);
-        //Attach the layout manager to the recyclerview
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        //Checks if there is already a databse in the internal storage.
-        mDatabase = checkDataBaseExists();
-        //Runs the method to check for internet.
-        //If there is connection then the JSON data will be downloadeed.
-        checkInternetConnection();
+            //intent filter and set action
+            mDatabseReadyIntentFilter = new IntentFilter();
+
+            mDatabseReadyIntentFilter.addAction("database-ready");
+
+            //Get the recyclerview
+            mRecyclerView = findViewById(R.id.recycler_view);
+            //It will not change size
+            mRecyclerView.setHasFixedSize(true);
+            //Attach the layout manager to the recyclerview
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            //Checks if there is already a databse in the internal storage.
+            mDatabase = checkDataBaseExists();
+            //Runs the method to check for internet.
+            //If there is connection then the JSON data will be downloadeed.
+            checkInternetConnection();
 
 
     }
@@ -108,7 +117,7 @@ public class MainActivity
 
         mLayoutState = mRecyclerView.getLayoutManager().onSaveInstanceState();
         outState.putParcelable(SAVED_LAYOUT_MANAGER, mLayoutState);
-        Toast.makeText(this, "onSavedInstance", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "onSavedInstance", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -148,7 +157,7 @@ public class MainActivity
             getLoaderManager().initLoader(GET_JSON_DATA, null, getJsonCallbacks);
         } else if (!data) {
             //TODO setup the retry screen.
-            Toast.makeText(this, "There is no internet connection", Toast.LENGTH_LONG).show();
+           // Toast.makeText(this, "There is no internet connection", Toast.LENGTH_LONG).show();
             //Schedule job to check for internet connection
         }
 
@@ -278,7 +287,14 @@ public class MainActivity
                 this,
                 imageView,
                 imageView.getTransitionName()).toBundle();
-        Intent intent = new Intent(MainActivity.this, DisplayRecipesActivity.class);
+        Intent intent;
+        if (mTwoPane){
+            intent = new Intent(MainActivity.this, FragmentActivity.class);
+
+        }else {
+            intent= new Intent(MainActivity.this, DisplayRecipesActivity.class);
+        }
+
         intent.putExtra("recipe_id", id);
         intent.putExtra("recipe_name", recipeName);
         intent.putExtra("content_description", contentDescription);
@@ -301,14 +317,14 @@ public class MainActivity
     @Override
     protected void onStart() {
         super.onStart();
-        Toast.makeText(this, "onStart", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onStart", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mDatabaseReadyReciever);
-        Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -319,19 +335,19 @@ public class MainActivity
         if (mLayoutState != null){
             mRecyclerView.getLayoutManager().onRestoreInstanceState(mLayoutState);
         }
-        Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();;
-        Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
     }
 }
 

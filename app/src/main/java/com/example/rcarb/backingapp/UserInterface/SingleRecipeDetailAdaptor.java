@@ -124,11 +124,11 @@ public class SingleRecipeDetailAdaptor extends RecyclerView.Adapter<SingleRecipe
             if (position == 0) {
                 int tag = position;
                 String text = "ingredients";
-                mItemClicked.onItemClicked(null, position );
+                mItemClicked.onItemClicked(null, position);
             } else {
 
                 RecipeStepsSub resSteps = steps;
-                mItemClicked.onItemClicked(resSteps, -2);
+                mItemClicked.onItemClicked(resSteps, position);
             }
         }
 
