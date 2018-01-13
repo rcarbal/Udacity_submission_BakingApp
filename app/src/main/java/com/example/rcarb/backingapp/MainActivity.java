@@ -27,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.rcarb.backingapp.Data.IntentServiceSQL;
+import com.example.rcarb.backingapp.Data.RecipeWidgetService;
 import com.example.rcarb.backingapp.LoadersAndAsyncTasks.CheckConnectionLoader;
 import com.example.rcarb.backingapp.LoadersAndAsyncTasks.CheckDatabaseAsyncTaskLoader;
 import com.example.rcarb.backingapp.LoadersAndAsyncTasks.GetRecipesLoader;
@@ -47,6 +48,9 @@ public class MainActivity
 
     private static final String DB_FULL_PATH = "/data/data/com.example.rcarb.backingapp/databases/BakingAppRecipes.db";
     private static final String SAVED_LAYOUT_MANAGER = "linerarLayoutManager";
+    //Constant to be for widget.
+    public static final String WIDGET_RECIPE_ID ="resId";
+    public static final String WIDGET_RECIPE_NAME ="resName";
 
 
     //Int for the loader that checks for internet connectuion
@@ -69,11 +73,15 @@ public class MainActivity
     RecyclerView.Adapter mAdaptor;
     private boolean mTwoPane;
 
+    private String mWidgetRecipeName;
+    private int mWidgetRecipeId = -1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //Check if the device is a tablet.
         if (findViewById(R.id.framelayout_tablet)!= null){
             mTwoPane = true;
@@ -104,11 +112,19 @@ public class MainActivity
             mRecyclerView.setLayoutManager(mLayoutManager);
             //Checks if there is already a databse in the internal storage.
             mDatabase = checkDataBaseExists();
+            checkIfIntentStarted();
             //Runs the method to check for internet.
             //If there is connection then the JSON data will be downloadeed.
             checkInternetConnection();
 
 
+    }
+    //Set Global variables if activity was started by an intent.
+    private void checkIfIntentStarted() {
+        if (getIntent().getBooleanExtra("intent",false)){
+            mWidgetRecipeId = getIntent().getIntExtra(WIDGET_RECIPE_ID, -1);
+            mWidgetRecipeName = getIntent().getStringExtra(WIDGET_RECIPE_NAME);
+        }
     }
 
     @Override
@@ -251,6 +267,7 @@ public class MainActivity
                     }
                     //TODO id namesRetieved is 0.
                     if (!confirmed.containsValue(false)) {
+                        RecipeWidgetService.startGetRecipesForWidgetUpdate(MainActivity.this);
                         Intent intent = new Intent("database-ready");
                         sendBroadcast(intent);
                     }
@@ -301,14 +318,38 @@ public class MainActivity
         startActivity(intent, bundle);
 
     }
+    private void launchFromIntent(){
+        Intent intent;
+        int id = mWidgetRecipeId;
+        String name = mWidgetRecipeName;
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
+                this).toBundle();
+        if (mTwoPane){
+            intent = new Intent(MainActivity.this, FragmentActivity.class);
 
+        }else {
+            intent= new Intent(MainActivity.this, DisplayRecipesActivity.class);
+        }
 
+        intent.putExtra("recipe_id", id);
+        intent.putExtra("recipe_name", name);
+        mWidgetRecipeId =-1;
+        mWidgetRecipeName = "";
+        startActivity(intent, bundle);
+
+    }
     //Braodcast Reciever that will know when databse is ready to be read.
     private class DatabaseReadyReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            getLoaderManager().initLoader(SETUP_ACTIVITY, null, setupRecyclerView);
+            RecipeWidgetService.startGetRecipesForWidgetUpdate(MainActivity.this);
+            if (mWidgetRecipeId!= -1){
+                launchFromIntent();
+            }else{
+                getLoaderManager().initLoader(SETUP_ACTIVITY, null, setupRecyclerView);
+            }
+
 
         }
 

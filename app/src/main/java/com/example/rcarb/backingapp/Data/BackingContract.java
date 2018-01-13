@@ -10,7 +10,7 @@ import android.provider.BaseColumns;
 public class BackingContract {
 
     //Uri that will be used by the URI Matcher.
-    public static final String AUTHORITY ="com.example.rcarb.backingapp";
+    public static final String AUTHORITY = "com.example.rcarb.backingapp";
 
     //Base content uri that will be the start for accessing our provider.
     public final static Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
@@ -21,8 +21,7 @@ public class BackingContract {
     public final static String PATH_STEPS = "Recipes Steps";
 
 
-
-    public static class RecipeEntry implements BaseColumns{
+    public static class RecipeEntry implements BaseColumns {
         //Uri that point to the three tables the Recipes, Recipes Ingredients, Recipe Steps.
         public static final Uri BASE_CONTENT_URI_RECIPES =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_RECIPE).build();
@@ -30,12 +29,14 @@ public class BackingContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_INGREDINETS).build();
         public static final Uri BASE_CONTENT_URI_RECIPES_STEPS =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_STEPS).build();
+       //Constant to be used in the widget.
+        public static final int INVALID_RECIPE = -1;
 
         //Table recipe parent constants
         public static final String RECIPES_TABLE_NAME = "Recipes";
         public static final String RECIPES_ID = "Recipe_Id";
-        public final static String RECIPES_NAME ="Recipe_Name";
-        public final static String RECIPES_SERVINGS ="Recipe_Servings";
+        public final static String RECIPES_NAME = "Recipe_Name";
+        public final static String RECIPES_SERVINGS = "Recipe_Servings";
         public final static String RECIPES_IMAGE = "Recipe_Image";
 
         //Table ingredients child constants
@@ -46,35 +47,35 @@ public class BackingContract {
         public final static String INGREDINETS_RECIPE_ID = "Recipe_Id";
 
         //Table steps child constants
-        public final static String STEPS_TABLE_NAME ="Steps";
+        public final static String STEPS_TABLE_NAME = "Steps";
         public final static String STEPS_ID = "Steps_Id";
-        public final static String STEPS_SHORT_DESCRIPTION ="Short_Description";
+        public final static String STEPS_SHORT_DESCRIPTION = "Short_Description";
         public final static String STEPS_DESCRIPTION = "Description";
         public final static String STEPS_VIDEO_URL = "Video_URL";
-        public final static String STEPS_THUMBNAIL_URL ="Thumbnail_URL";
+        public final static String STEPS_THUMBNAIL_URL = "Thumbnail_URL";
         public final static String STEPS_RECIPE_ID = "Recipe_id";
 
         //Create SQL tables Strings.
         //String for Recipe table
         public final static String SQL_CREATE_RECIPES_ENTRIES =
-                "CREATE TABLE "+ RecipeEntry.RECIPES_TABLE_NAME + " (" +
-                        RecipeEntry._ID+ " INTEGER PRIMARY KEY, " +
-                        RecipeEntry.RECIPES_ID+ " INTEGER NOT NULL, " +
+                "CREATE TABLE " + RecipeEntry.RECIPES_TABLE_NAME + " (" +
+                        RecipeEntry._ID + " INTEGER PRIMARY KEY, " +
+                        RecipeEntry.RECIPES_ID + " INTEGER NOT NULL, " +
                         RecipeEntry.RECIPES_NAME + " TEXT NOT NULL, " +
                         RecipeEntry.RECIPES_SERVINGS + " INTEGER NOT NULL, " +
                         RecipeEntry.RECIPES_IMAGE + " TEXT)";
 
         //String for ingredient table.
         public final static String SQL_CREATE_INGREDIENTS_ENTRIES =
-                "CREATE TABLE "+ RecipeEntry.INGREDIENTS_TABLE_NAME + " (" +
+                "CREATE TABLE " + RecipeEntry.INGREDIENTS_TABLE_NAME + " (" +
                         RecipeEntry._ID + " INTEGER PRIMARY KEY, " +
                         RecipeEntry.INGREDIENTS_QUANTITY + " REAL NOT NULL, " +
                         RecipeEntry.INGREDIENTS_MEASURE + " TEXT NOT NULL, " +
                         RecipeEntry.INGREDIENT_INGREDIENTS + " TEXT NOT NULL, " +
                         RecipeEntry.INGREDINETS_RECIPE_ID + " INTEGER NOT NULL, " +
                         "FOREIGN KEY (" +
-                        RecipeEntry.INGREDINETS_RECIPE_ID +") REFERENCES " +
-                        RecipeEntry.RECIPES_TABLE_NAME+ "(" +RECIPES_ID + "))";
+                        RecipeEntry.INGREDINETS_RECIPE_ID + ") REFERENCES " +
+                        RecipeEntry.RECIPES_TABLE_NAME + "(" + RECIPES_ID + "))";
 
         //String for steps String.
         public final static String SQL_CREATE_STEPS_ENTRIES =
@@ -101,10 +102,6 @@ public class BackingContract {
         //Deletes the steps databse
         public static final String SQL_DELETE_STEPS_ENTRIES =
                 "DROP TABLE IF EXISTS " + RecipeEntry.STEPS_TABLE_NAME;
-
-
-
-
 
 
     }

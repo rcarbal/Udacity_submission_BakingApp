@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.rcarb.backingapp.Data.BackingContract;
+import com.example.rcarb.backingapp.Data.RecipeWidgetService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,6 +109,7 @@ public class IntentServiceTasks {
 
             }
         }
+
 
      Intent intent = new Intent("database-ready");
      context.sendBroadcast(intent);

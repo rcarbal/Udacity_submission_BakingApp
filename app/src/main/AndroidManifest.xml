@@ -14,7 +14,6 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTop"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,11 +33,16 @@
         <provider
             android:name=".Data.RecipesContentProvider"
             android:authorities="com.example.rcarb.backingapp"
-            android:exported="false" />
+            android:exported="true" />
 
         <service
             android:name=".Data.IntentServiceSQL"
             android:exported="false" />
+        <service android:name=".Data.RecipeWidgetService"
+            android:exported="false"/>
+
+        <service android:name=".Utilities.GridWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
         <receiver android:name=".RecipeWidgetProvider">
             <intent-filter>
