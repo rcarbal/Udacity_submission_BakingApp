@@ -112,8 +112,14 @@ public class DisplayRecipesActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
-//  <------------------- Loader callbacks-------------------------->
+    //  <------------------- Loader callbacks-------------------------->
     //Load recycler view loader
     LoaderManager.LoaderCallbacks<Cursor> loadRecyclerView =
         new LoaderManager.LoaderCallbacks<Cursor>() {

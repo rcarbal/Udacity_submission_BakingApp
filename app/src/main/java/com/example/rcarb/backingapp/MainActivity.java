@@ -1,7 +1,5 @@
 package com.example.rcarb.backingapp;
 
-
-import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
@@ -49,8 +47,8 @@ public class MainActivity
     private static final String DB_FULL_PATH = "/data/data/com.example.rcarb.backingapp/databases/BakingAppRecipes.db";
     private static final String SAVED_LAYOUT_MANAGER = "linerarLayoutManager";
     //Constant to be for widget.
-    public static final String WIDGET_RECIPE_ID ="resId";
-    public static final String WIDGET_RECIPE_NAME ="resName";
+    public static final String WIDGET_RECIPE_ID = "resId";
+    public static final String WIDGET_RECIPE_NAME = "resName";
 
 
     //Int for the loader that checks for internet connectuion
@@ -83,45 +81,46 @@ public class MainActivity
         setContentView(R.layout.activity_main);
 
         //Check if the device is a tablet.
-        if (findViewById(R.id.framelayout_tablet)!= null){
+        if (findViewById(R.id.framelayout_tablet) != null) {
             mTwoPane = true;
             mLayoutManager = new GridLayoutManager(this, 2);
-        }else {
+        } else {
             //Set the layout manager.
             mLayoutManager = new LinearLayoutManager(this);
             mTwoPane = false;
         }
 
 
-            mLayoutState = new Bundle();
-            // Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
+        mLayoutState = new Bundle();
+        // Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
 
-            //Broadcast receiver instantiate
-            mDatabaseReadyReciever = new DatabaseReadyReceiver();
+        //Broadcast receiver instantiate
+        mDatabaseReadyReciever = new DatabaseReadyReceiver();
 
-            //intent filter and set action
-            mDatabseReadyIntentFilter = new IntentFilter();
+        //intent filter and set action
+        mDatabseReadyIntentFilter = new IntentFilter();
 
-            mDatabseReadyIntentFilter.addAction("database-ready");
+        mDatabseReadyIntentFilter.addAction("database-ready");
 
-            //Get the recyclerview
-            mRecyclerView = findViewById(R.id.recycler_view);
-            //It will not change size
-            mRecyclerView.setHasFixedSize(true);
-            //Attach the layout manager to the recyclerview
-            mRecyclerView.setLayoutManager(mLayoutManager);
-            //Checks if there is already a databse in the internal storage.
-            mDatabase = checkDataBaseExists();
-            checkIfIntentStarted();
-            //Runs the method to check for internet.
-            //If there is connection then the JSON data will be downloadeed.
-            checkInternetConnection();
+        //Get the recyclerview
+        mRecyclerView = findViewById(R.id.recycler_view);
+        //It will not change size
+        mRecyclerView.setHasFixedSize(true);
+        //Attach the layout manager to the recyclerview
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        //Checks if there is already a databse in the internal storage.
+        mDatabase = checkDataBaseExists();
+        checkIfIntentStarted();
+        //Runs the method to check for internet.
+        //If there is connection then the JSON data will be downloadeed.
+        checkInternetConnection();
 
 
     }
+
     //Set Global variables if activity was started by an intent.
     private void checkIfIntentStarted() {
-        if (getIntent().getBooleanExtra("intent",false)){
+        if (getIntent().getBooleanExtra("intent", false)) {
             mWidgetRecipeId = getIntent().getIntExtra(WIDGET_RECIPE_ID, -1);
             mWidgetRecipeName = getIntent().getStringExtra(WIDGET_RECIPE_NAME);
         }
@@ -133,7 +132,7 @@ public class MainActivity
 
         mLayoutState = mRecyclerView.getLayoutManager().onSaveInstanceState();
         outState.putParcelable(SAVED_LAYOUT_MANAGER, mLayoutState);
-       // Toast.makeText(this, "onSavedInstance", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "onSavedInstance", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -152,7 +151,13 @@ public class MainActivity
 
     //Initiate the AsyncTask loader that will check for internet connection.
     private void checkInternetConnection() {
-        getLoaderManager().initLoader(CHECK_NETWORK_CONNECTION, null, this);
+        LoaderManager loaderManager = getLoaderManager();
+        Loader<Boolean> checkConnection = loaderManager.getLoader(CHECK_NETWORK_CONNECTION);
+        if (checkConnection == null) {
+            getLoaderManager().initLoader(CHECK_NETWORK_CONNECTION, null, this);
+        } else {
+            loaderManager.restartLoader(CHECK_NETWORK_CONNECTION, null, this);
+        }
     }
 
     //Method to setup the Recycler view on the main
@@ -170,13 +175,24 @@ public class MainActivity
     public void onLoadFinished(Loader<Boolean> loader, Boolean data) {
         Boolean hasConnection = data;
         if (data) {
-            getLoaderManager().initLoader(GET_JSON_DATA, null, getJsonCallbacks);
+            LoaderManager loaderManager = getLoaderManager();
+            Loader<ArrayList<RecipeInfoParent>> getLoader = loaderManager.getLoader(GET_JSON_DATA);
+            if (getLoader == null) {
+                getLoaderManager().initLoader(GET_JSON_DATA, null, getJsonCallbacks);
+            }else {
+                loaderManager.restartLoader(GET_JSON_DATA, null,getJsonCallbacks );
+            }
         } else if (!data) {
-            //TODO setup the retry screen.
-           // Toast.makeText(this, "There is no internet connection", Toast.LENGTH_LONG).show();
-            //Schedule job to check for internet connection
+            Toast.makeText(this, "There is no internet connection", Toast.LENGTH_LONG).show();
+            //If there is no connection load the recipes from the database
+            LoaderManager loaderManager = getLoaderManager();
+            Loader<Cursor> loaderCheck = loaderManager.getLoader(SETUP_ACTIVITY);
+            if (loaderCheck == null){
+                loaderManager.initLoader(SETUP_ACTIVITY, null, setupRecyclerView);
+                }else{
+                loaderManager.restartLoader(SETUP_ACTIVITY, null, setupRecyclerView);
+            }
         }
-
     }
 
     @Override
@@ -202,8 +218,14 @@ public class MainActivity
                     mRecipes = data;
                     ArrayList<RecipeInfoParent> results = data;
                     if (mDatabase) {
-                        //Check if newly downloaded recipes are already saved in the database.
-                        getLoaderManager().initLoader(CHECK_DATABSE_FOR_RECIPES, null, checkDatabase);
+                        LoaderManager loaderManager = getLoaderManager();
+                        Loader<List<String>> checkDtb = loaderManager.getLoader(CHECK_DATABSE_FOR_RECIPES);
+                        if (checkDtb == null) {
+                            //Check if newly downloaded recipes are already saved in the database.
+                            getLoaderManager().initLoader(CHECK_DATABSE_FOR_RECIPES, null, checkDatabase);
+                        }else{
+                            loaderManager.restartLoader(CHECK_DATABSE_FOR_RECIPES, null, checkDatabase);
+                        }
                     } else {
                         //When the GetRecipesLoader is done then it will run the intent service to
                         //write the returned array into the database.
@@ -218,30 +240,6 @@ public class MainActivity
 
                 @Override
                 public void onLoaderReset(Loader<ArrayList<RecipeInfoParent>> loader) {
-
-                }
-            };
-
-    //LODAER callbacks for setting up MainActiviy RecyclerView
-    private LoaderManager.LoaderCallbacks<Cursor> setupRecyclerView =
-            new LoaderManager.LoaderCallbacks<Cursor>() {
-
-                @Override
-                public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                    return new SetupParentRecyclerViewLoader(MainActivity.this);
-                }
-
-                @Override
-                public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                    if (data == null) {
-                        //TODO is cursor is null
-                    }
-                    mAdaptor =new MainRecipeAdaptor(data, MainActivity.this);
-                    mRecyclerView.setAdapter(mAdaptor);
-                }
-
-                @Override
-                public void onLoaderReset(Loader<Cursor> loader) {
 
                 }
             };
@@ -281,6 +279,33 @@ public class MainActivity
                 }
             };
 
+    //LODAER callbacks for setting up MainActiviy RecyclerView
+    private LoaderManager.LoaderCallbacks<Cursor> setupRecyclerView =
+            new LoaderManager.LoaderCallbacks<Cursor>() {
+
+                @Override
+                public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                    return new SetupParentRecyclerViewLoader(MainActivity.this);
+                }
+
+                @Override
+                public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+                    if (data == null) {
+                        //TODO is cursor is null
+                        Toast.makeText(MainActivity.this, "No recipes in databse, please" +
+                                " connect to internet and restart app.", Toast.LENGTH_SHORT).show();
+                    }
+                    mAdaptor = new MainRecipeAdaptor(data, MainActivity.this);
+                    mRecyclerView.setAdapter(mAdaptor);
+                }
+
+                @Override
+                public void onLoaderReset(Loader<Cursor> loader) {
+
+                }
+            };
+
+
     //Get the names of the downloaded recipes.
     private String getDownloadedRecipeNames() {
         String names = "";
@@ -305,11 +330,11 @@ public class MainActivity
                 imageView,
                 imageView.getTransitionName()).toBundle();
         Intent intent;
-        if (mTwoPane){
+        if (mTwoPane) {
             intent = new Intent(MainActivity.this, FragmentActivity.class);
 
-        }else {
-            intent= new Intent(MainActivity.this, DisplayRecipesActivity.class);
+        } else {
+            intent = new Intent(MainActivity.this, DisplayRecipesActivity.class);
         }
 
         intent.putExtra("recipe_id", id);
@@ -318,35 +343,38 @@ public class MainActivity
         startActivity(intent, bundle);
 
     }
-    private void launchFromIntent(){
+
+    private void launchFromIntent() {
         Intent intent;
         int id = mWidgetRecipeId;
         String name = mWidgetRecipeName;
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
                 this).toBundle();
-        if (mTwoPane){
+        if (mTwoPane) {
             intent = new Intent(MainActivity.this, FragmentActivity.class);
 
-        }else {
-            intent= new Intent(MainActivity.this, DisplayRecipesActivity.class);
+        } else {
+            intent = new Intent(MainActivity.this, DisplayRecipesActivity.class);
         }
 
         intent.putExtra("recipe_id", id);
         intent.putExtra("recipe_name", name);
-        mWidgetRecipeId =-1;
+        mWidgetRecipeId = -1;
         mWidgetRecipeName = "";
         startActivity(intent, bundle);
+        finish();
 
     }
+
     //Braodcast Reciever that will know when databse is ready to be read.
     private class DatabaseReadyReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             RecipeWidgetService.startGetRecipesForWidgetUpdate(MainActivity.this);
-            if (mWidgetRecipeId!= -1){
+            if (mWidgetRecipeId != -1) {
                 launchFromIntent();
-            }else{
+            } else {
                 getLoaderManager().initLoader(SETUP_ACTIVITY, null, setupRecyclerView);
             }
 
@@ -365,7 +393,7 @@ public class MainActivity
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mDatabaseReadyReciever);
-       // Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -373,10 +401,10 @@ public class MainActivity
     protected void onResume() {
         super.onResume();
         registerReceiver(mDatabaseReadyReciever, mDatabseReadyIntentFilter);
-        if (mLayoutState != null){
+        if (mLayoutState != null) {
             mRecyclerView.getLayoutManager().onRestoreInstanceState(mLayoutState);
         }
-       // Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -387,7 +415,8 @@ public class MainActivity
 
     @Override
     protected void onRestart() {
-        super.onRestart();;
+        super.onRestart();
+        ;
         //Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
     }
 }

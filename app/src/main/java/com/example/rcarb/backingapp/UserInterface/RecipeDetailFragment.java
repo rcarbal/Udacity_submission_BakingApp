@@ -136,8 +136,11 @@ public class RecipeDetailFragment extends Fragment
 
     @Override
     public void onDestroy() {
+        if (mCursor!= null){
+            mCursor.close();
+        }
         super.onDestroy();
-        mCursor.close();
+
     }
 
 

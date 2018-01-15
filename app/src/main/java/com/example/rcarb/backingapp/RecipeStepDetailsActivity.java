@@ -64,6 +64,7 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
     //Exoplayer class
     private SimpleExoPlayer mPlayer;
     private SimpleExoPlayerView mPlayerView;
+    private SimpleExoPlayerView mPlayerViewNull;
 
     //State of track/media source.
     private boolean playWhenReady;
@@ -80,9 +81,12 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.steps_detail_activity);
 
+        mPlayerView = findViewById(R.id.simpleExoPlayerView);
+        mPlayerView.setVisibility(View.GONE);
+        mPlayerViewNull = findViewById(R.id.simpleExoPlayerView_null);
+        mPlayerViewNull.setVisibility(View.GONE);
         mCurrentStep = getIntentsInfo();
         textView = findViewById(R.id.textView);
-        mPlayerView = findViewById(R.id.simpleExoPlayerView);
         haveParsed = false;
         mStepId = mCurrentStep.getIdSteps();
         mStoredSteps = new ArrayList<>();
@@ -96,16 +100,6 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
         parseForSteps();
         setButtons();
     }
- //   RecipeStepsSub mCurrentStep;
-//    private String mRecipeTitle;
-//    private int mRecipeId;
-//    int mStepId;
-//    int mIndexOfStep;
-//    int mSizedOfArray;
-//    private boolean haveParsed;
-//    //If there is no more steps
-//    private boolean mHasNextStep;
-//    private boolean mHasPrevious;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -116,7 +110,7 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
         outState.putInt("mIndexOfStep", mIndexOfStep);
         outState.putInt("sizeSteps", mSizedOfArray);
         outState.putBoolean("next", mHasNextStep);
-        outState.putBoolean("previous",mHasPrevious);
+        outState.putBoolean("previous", mHasPrevious);
         super.onSaveInstanceState(outState);
     }
 
@@ -154,51 +148,60 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
     //Initiates the Exoplayer
     private void initializePlayer(RecipeStepsSub currentStep) {
         if (mPlayer == null) {
-            //Track selector that contains the BANDWIDTH_METER.
-            TrackSelection.Factory adaptiveTrackSelectionFactory =
-                    new AdaptiveTrackSelection.Factory(BANDWITH_METER);
-            mPlayer = ExoPlayerFactory.newSimpleInstance(
-                    new DefaultRenderersFactory(this),
-                    new DefaultTrackSelector(adaptiveTrackSelectionFactory),
-                    new DefaultLoadControl());
-
-            //Set the view to the player.
-            mPlayerView.setPlayer(mPlayer);
-
-            mPlayer.setPlayWhenReady(playWhenReady);
-            mPlayer.seekTo(currentWindow, playbackPosition);
-
-            //Create the MediaSource
             Uri uri = Uri.parse(mCurrentStep.getVideoUrlSteps());
-            MediaSource mediaSource = buildMediaSource(uri);
-            mPlayer.prepare(mediaSource, true, false);
+            if (uri.toString().equals("")) {
+                mPlayer = null;
+                mPlayerView.setVisibility(View.GONE);
+                mPlayerViewNull.setVisibility(View.VISIBLE);
+            } else {
+                mPlayerViewNull.setVisibility(View.GONE);
+                mPlayerView.setVisibility(View.VISIBLE);
+                //Track selector that contains the BANDWIDTH_METER.
+                TrackSelection.Factory adaptiveTrackSelectionFactory =
+                        new AdaptiveTrackSelection.Factory(BANDWITH_METER);
+                mPlayer = ExoPlayerFactory.newSimpleInstance(
+                        new DefaultRenderersFactory(this),
+                        new DefaultTrackSelector(adaptiveTrackSelectionFactory),
+                        new DefaultLoadControl());
+
+                //Set the view to the player.
+                mPlayerView.setPlayer(mPlayer);
+
+                mPlayer.setPlayWhenReady(playWhenReady);
+                mPlayer.seekTo(currentWindow, playbackPosition);
+
+                //Create the MediaSource
+                MediaSource mediaSource = buildMediaSource(uri);
+                mPlayer.prepare(mediaSource, true, false);
+            }
         }
     }
 
     //Clears the player
     private void clearPlayer() {
-        mPlayer.release();
-        mPlayer = null;
-
+        if (mPlayer != null) {
+            mPlayer.release();
+            mPlayer = null;
+        }
     }
 
     //Method to find the current index of the current step.
     private int getIndexOfCurrentStep() {
         //for loop to find index
         int currentSIze = mStoredSteps.size();
-        for (int i = 0; i < mStoredSteps.size();i++){
+        for (int i = 0; i < mStoredSteps.size(); i++) {
             int id = mStoredSteps.get(i).getIdSteps();
             int current = mStepId;
-            if (id == current){
+            if (id == current) {
                 return i;
-            }else{
+            } else {
                 //TODO if the if is never found.
             }
         }
         return -1;
     }
 
-    private void setButtons(){
+    private void setButtons() {
         int getTotalStepIndex = mStoredSteps.size() - 1;
 
         mIndexOfStep = getIndexOfCurrentStep();
@@ -241,12 +244,12 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
         ExtractorsFactory extractorsFactory =
                 new DefaultExtractorsFactory();
 
-
-        return new ExtractorMediaSource(uri,
+        ExtractorMediaSource mediaSource = new ExtractorMediaSource(uri,
                 datasourceFactory,
                 extractorsFactory,
                 null,
                 null);
+        return mediaSource;
     }
 
     //Creates full screen if the screen configuration is landscape.
@@ -277,7 +280,7 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
     //On button click goes to next step
     public void nextStep(View view) {
         if (mHasNextStep) {
-           if (mIndexOfStep < mSizedOfArray){
+            if (mIndexOfStep < mSizedOfArray) {
                 //Clear the player
                 clearPlayer();
                 //Get the next index
@@ -289,17 +292,17 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
                 initializePlayer(mCurrentStep);
                 mStepId = mCurrentStep.getIdSteps();
                 setupUi();
-               mIndexOfStep = getIndexOfCurrentStep();
+                mIndexOfStep = getIndexOfCurrentStep();
 
-               //If reach end disable the next button.
-               if (mCurrentStep.getIdSteps() == mStoredSteps.get(mSizedOfArray - 1).getIdSteps()) {
+                //If reach end disable the next button.
+                if (mCurrentStep.getIdSteps() == mStoredSteps.get(mSizedOfArray - 1).getIdSteps()) {
                     mHasNextStep = false;
                     mNextButton.setClickable(false);
                 }
                 //If index is greater than 0 than has previous.
-                if (mIndexOfStep > 0 ){
-                   mHasPrevious = true;
-                   mPreviousButton.setClickable(true);
+                if (mIndexOfStep > 0) {
+                    mHasPrevious = true;
+                    mPreviousButton.setClickable(true);
                 }
             }
         }
@@ -307,28 +310,29 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
 
     //On button click goes to previous
     public void previousStep(View view) {
-        if (mHasPrevious){
+        if (mHasPrevious) {
             //Clear the player.
             clearPlayer();
-            int previousIndex = getIndexOfCurrentStep() -1;
+            int previousIndex = getIndexOfCurrentStep() - 1;
             //Get previous recipe
             RecipeStepsSub previous = mStoredSteps.get(previousIndex);
             mCurrentStep = previous;
             //Initialize previous step.
             initializePlayer(previous);
             mStepId = mCurrentStep.getIdSteps();
-            setupUi();;
+            setupUi();
+            ;
             mIndexOfStep = getIndexOfCurrentStep();
         }
         //If you reach the ned of the previous.
-        if (mCurrentStep.getIdSteps() == mStoredSteps.get(0).getIdSteps()){
+        if (mCurrentStep.getIdSteps() == mStoredSteps.get(0).getIdSteps()) {
             mHasPrevious = false;
             mPreviousButton.setClickable(false);
             mHasNextStep = true;
             mNextButton.setClickable(true);
         }
         //If index is less than the total index.
-        if (mIndexOfStep != mSizedOfArray){
+        if (mIndexOfStep != mSizedOfArray) {
             //Has next
             mHasNextStep = true;
             mNextButton.setClickable(true);

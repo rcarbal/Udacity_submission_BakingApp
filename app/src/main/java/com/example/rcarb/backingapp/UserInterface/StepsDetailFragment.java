@@ -111,12 +111,12 @@ public class StepsDetailFragment extends Fragment {
         ExtractorsFactory extractorsFactory =
                 new DefaultExtractorsFactory();
 
-
-        return new ExtractorMediaSource(uri,
+        ExtractorMediaSource mediaSource = new ExtractorMediaSource(uri,
                 datasourceFactory,
                 extractorsFactory,
                 null,
                 null);
+        return mediaSource;
     }
     //Releases the Player
     private void releasePlayer() {

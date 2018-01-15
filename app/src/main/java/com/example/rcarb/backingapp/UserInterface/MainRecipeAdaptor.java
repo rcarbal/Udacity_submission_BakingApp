@@ -46,8 +46,8 @@ public class MainRecipeAdaptor extends RecyclerView.Adapter<MainRecipeAdaptor.Ca
 
         //Construct the view
         View view = layoutInflater.inflate(viewToBeInflated, parent, immediatelyAttached);
-//        int viewHeight = parent.getMeasuredHeight() / 2;
-//        view.setMinimumHeight(viewHeight);
+        int viewHeight = parent.getMeasuredHeight() / 2;
+        view.setMinimumHeight(viewHeight);
         return new CardViewHolder(view);
     }
 
