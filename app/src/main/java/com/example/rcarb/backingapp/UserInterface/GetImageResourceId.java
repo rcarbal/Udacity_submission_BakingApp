@@ -13,13 +13,13 @@ public class GetImageResourceId {
                     recipeIdvalue = R.drawable.nutellapie;
                     break;
                 case 2:
-                    recipeIdvalue = R.drawable.brownies;
+                    recipeIdvalue = R.drawable.brownies_pic;
                     break;
                 case 3:
                     recipeIdvalue = R.drawable.yellow_cake;
                     break;
                 case 4:
-                    recipeIdvalue = R.drawable.cheesecake;
+                    recipeIdvalue = R.drawable.cheesecake_pic;
                     break;
                 default:
                     recipeIdvalue = R.drawable.no_picture;

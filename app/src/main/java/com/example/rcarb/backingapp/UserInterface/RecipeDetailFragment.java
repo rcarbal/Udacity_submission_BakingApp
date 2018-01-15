@@ -94,13 +94,13 @@ public class RecipeDetailFragment extends Fragment
                 mRecipeImage.setImageResource(R.drawable.nutellapie);
                 break;
             case "Brownies":
-                mRecipeImage.setImageResource(R.drawable.brownies);
+                mRecipeImage.setImageResource(R.drawable.brownies_pic);
                 break;
             case "Yellow Cake":
                 mRecipeImage.setImageResource(R.drawable.yellow_cake);
                 break;
             case "Cheesecake":
-                mRecipeImage.setImageResource(R.drawable.cheesecake);
+                mRecipeImage.setImageResource(R.drawable.cheesecake_pic);
                 break;
             default:
                 mRecipeImage.setImageResource(R.drawable.no_picture);

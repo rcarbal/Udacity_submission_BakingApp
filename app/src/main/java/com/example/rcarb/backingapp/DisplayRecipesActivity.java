@@ -79,13 +79,13 @@ public class DisplayRecipesActivity extends AppCompatActivity
                 mImageView.setImageResource(R.drawable.nutellapie);
                 break;
             case "Brownies":
-                mImageView.setImageResource(R.drawable.brownies);
+                mImageView.setImageResource(R.drawable.brownies_pic);
                 break;
             case "Yellow Cake":
                 mImageView.setImageResource(R.drawable.yellow_cake);
                 break;
             case "Cheesecake":
-                mImageView.setImageResource(R.drawable.cheesecake);
+                mImageView.setImageResource(R.drawable.cheesecake_pic);
                 break;
             default:
                 mImageView.setImageResource(R.drawable.no_picture);

@@ -71,13 +71,13 @@ public class MainRecipeAdaptor extends RecyclerView.Adapter<MainRecipeAdaptor.Ca
                 holder.mImageView.setImageResource(R.drawable.nutellapie);
                 break;
             case "Brownies":
-                holder.mImageView.setImageResource(R.drawable.brownies);
+                holder.mImageView.setImageResource(R.drawable.brownies_pic);
                 break;
             case "Yellow Cake":
                 holder.mImageView.setImageResource(R.drawable.yellow_cake);
                 break;
             case "Cheesecake":
-                holder.mImageView.setImageResource(R.drawable.cheesecake);
+                holder.mImageView.setImageResource(R.drawable.cheesecake_pic);
                 break;
             default:
                 holder.mImageView.setImageResource(R.drawable.no_picture);
