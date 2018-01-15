@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         android:transitionName="@string/selected_photo"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:contentDescription="TODO" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ingredients_rv"
         android:layout_width="match_parent"

@@ -4,27 +4,18 @@ import android.app.Activity;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import com.example.rcarb.backingapp.Data.BackingContract;
-import com.example.rcarb.backingapp.R;
-
-import java.lang.ref.WeakReference;
-
-/**
- * Created by rcarb on 12/25/2017.
- */
 
 public class SetupChildRecipeAsyncTaskLoader extends AsyncTaskLoader<Cursor>{
 
     private static final String TAG = Activity.class.getName();
-    private Bundle mBundle;
+    private final Bundle mBundle;
 
     public SetupChildRecipeAsyncTaskLoader(Context context, final Bundle args) {
         super(context);
@@ -46,7 +37,7 @@ public class SetupChildRecipeAsyncTaskLoader extends AsyncTaskLoader<Cursor>{
     public Cursor loadInBackground() {
         //Try to get the selected database
         int recipeId = mBundle.getInt("recipe_id");
-        String mSelectionClause = null;
+        String mSelectionClause;
         String[] mSelectionArgs = new String[1];
 
         //if the recipe_id is null
@@ -73,6 +64,7 @@ public class SetupChildRecipeAsyncTaskLoader extends AsyncTaskLoader<Cursor>{
         //return null if the try/catch failed.
         MatrixCursor matrixCursor = new MatrixCursor(new String[]{"fake", "faker"});
         matrixCursor.addRow(new Object[]{"null","null" });
+        @SuppressWarnings("UnnecessaryLocalVariable")
         MergeCursor mergeCursor = new MergeCursor(new Cursor[]{matrixCursor, cursor});
 
         return mergeCursor;

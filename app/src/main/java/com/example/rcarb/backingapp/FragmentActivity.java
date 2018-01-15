@@ -1,35 +1,23 @@
 package com.example.rcarb.backingapp;
 
-import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.rcarb.backingapp.LoadersAndAsyncTasks.GetIngredientsAsyncTaskLoader;
-import com.example.rcarb.backingapp.LoadersAndAsyncTasks.GetRecipeStepsLoader;
 import com.example.rcarb.backingapp.LoadersAndAsyncTasks.SetupChildRecipeAsyncTaskLoader;
 import com.example.rcarb.backingapp.UserInterface.IngredientsDetailFragment;
 import com.example.rcarb.backingapp.UserInterface.RecipeDetailFragment;
-import com.example.rcarb.backingapp.UserInterface.SetIngredientsAdaptor;
-import com.example.rcarb.backingapp.UserInterface.SingleRecipeDetailAdaptor;
 import com.example.rcarb.backingapp.UserInterface.StepsDetailFragment;
 import com.example.rcarb.backingapp.Utilities.RecipeIngredientsSub;
 import com.example.rcarb.backingapp.Utilities.RecipeStepsSub;
 
 import java.util.ArrayList;
-
-/**
- * Created by rcarb on 1/6/2018.
- */
 
 public class FragmentActivity extends AppCompatActivity
         implements RecipeDetailFragment.SendToActivity{
@@ -103,7 +91,7 @@ public class FragmentActivity extends AppCompatActivity
 //
 //    }
     //<-----------------------------LOADER CALLBACKS----------------------------------------------->
-    LoaderManager.LoaderCallbacks<Cursor> getCuror =
+private final LoaderManager.LoaderCallbacks<Cursor> getCuror =
             new LoaderManager.LoaderCallbacks<Cursor>() {
 
                 @Override
@@ -137,7 +125,7 @@ public class FragmentActivity extends AppCompatActivity
             };
 
     //Ingredients to get Loader
-    private LoaderManager.LoaderCallbacks<ArrayList<RecipeIngredientsSub>> getIngredients =
+    private final LoaderManager.LoaderCallbacks<ArrayList<RecipeIngredientsSub>> getIngredients =
             new LoaderManager.LoaderCallbacks<ArrayList<RecipeIngredientsSub>>() {
                 @Override
                 public Loader<ArrayList<RecipeIngredientsSub>> onCreateLoader(int id, Bundle args) {
@@ -200,7 +188,7 @@ public class FragmentActivity extends AppCompatActivity
             transaction.replace(R.id.swap_fragment_container, recipeFragment);
             transaction.commit();
         }else if (recipeId >0){
-            RecipeStepsSub current = recipe;
+            @SuppressWarnings("UnnecessaryLocalVariable") RecipeStepsSub current = recipe;
             //Bundle to be sent to the steps fragment.
             Bundle bundle = new Bundle();
             bundle.putString("description", current.getDescriptionSteps());

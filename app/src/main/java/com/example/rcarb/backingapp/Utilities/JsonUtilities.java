@@ -8,14 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-
-/**
- * Created by rcarb on 12/11/2017.
- */
 
 public class JsonUtilities {
     private static final String TAG = "MainActivity";
@@ -44,6 +37,7 @@ public class JsonUtilities {
     public static JSONArray tryToMakeJsonArray(String stringData) {
 
         //Create the Json object out of the strings.
+        @SuppressWarnings("UnusedAssignment")
         JSONArray jsonData = null;
 
         try {
@@ -61,11 +55,11 @@ public class JsonUtilities {
      * each of the json keys.
      *
      * @param data
-     * @return
      * @throws JSONException
      */
+    @SuppressWarnings("JavaDoc")
     public static ArrayList<RecipeInfoParent> getJsonParentValues(JSONArray data,
-                                                            Context context)throws JSONException {
+                                                                  Context context)throws JSONException {
         //Check that the Json object is not empty.
         if (data != null) {
 
@@ -226,7 +220,4 @@ public class JsonUtilities {
     from the JSON data.
      */
 
-    public void getSubJsonValues(){
-
-    }
 }

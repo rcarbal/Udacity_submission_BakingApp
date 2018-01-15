@@ -3,10 +3,6 @@ package com.example.rcarb.backingapp.Utilities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by rcarb on 12/13/2017.
- */
-
 public class RecipeIngredientsSub implements Parcelable {
 
     private double mQuantityValue;
@@ -16,7 +12,7 @@ public class RecipeIngredientsSub implements Parcelable {
     public RecipeIngredientsSub() {
     }
 
-    protected RecipeIngredientsSub(Parcel in) {
+    private RecipeIngredientsSub(Parcel in) {
         mQuantityValue = in.readDouble();
         mMeasureValue = in.readString();
         mIngredientValue = in.readString();

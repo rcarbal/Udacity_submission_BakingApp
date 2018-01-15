@@ -3,10 +3,6 @@ package com.example.rcarb.backingapp.Utilities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by rcarb on 12/14/2017.
- */
-
 public class RecipeStepsSub implements Parcelable {
 
     private int mStepsId;
@@ -78,7 +74,7 @@ public class RecipeStepsSub implements Parcelable {
     }
     //getter and setter methods for the member variables.
 
-    protected RecipeStepsSub(Parcel in) {
+    private RecipeStepsSub(Parcel in) {
         mStepsId = in.readInt();
         mStepsShortDescription = in.readString();
         mStepsDescription = in.readString();

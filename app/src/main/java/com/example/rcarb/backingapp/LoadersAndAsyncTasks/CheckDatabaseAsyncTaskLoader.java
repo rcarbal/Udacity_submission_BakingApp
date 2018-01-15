@@ -8,14 +8,9 @@ import android.util.Log;
 import com.example.rcarb.backingapp.Data.BackingContract;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
-
-/**
- * Created by rcarb on 12/28/2017.
- */
 
 public class CheckDatabaseAsyncTaskLoader extends AsyncTaskLoader<List<String>> {
     public CheckDatabaseAsyncTaskLoader(Context context) {
@@ -28,6 +23,7 @@ public class CheckDatabaseAsyncTaskLoader extends AsyncTaskLoader<List<String>> 
         forceLoad();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List loadInBackground() {
 
@@ -47,6 +43,7 @@ public class CheckDatabaseAsyncTaskLoader extends AsyncTaskLoader<List<String>> 
         }
         //Get the values from the cursor
         List<String> recipes = new ArrayList<>();
+        assert cursor != null;
         if (cursor.moveToFirst()){
             do {
                 String name = cursor.getString(cursor.getColumnIndex(BackingContract.RecipeEntry.RECIPES_NAME));

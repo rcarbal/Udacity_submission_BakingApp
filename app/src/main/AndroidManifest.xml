@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.rcarb.backingapp">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,7 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme"
@@ -34,16 +36,20 @@
         <provider
             android:name=".Data.RecipesContentProvider"
             android:authorities="com.example.rcarb.backingapp"
-            android:exported="true" />
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
 
         <service
             android:name=".Data.IntentServiceSQL"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="InnerclassSeparator" />
         <service android:name=".Data.RecipeWidgetService"
-            android:exported="false"/>
+            android:exported="false"
+            tools:ignore="InnerclassSeparator" />
 
         <service android:name=".Utilities.GridWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            tools:ignore="InnerclassSeparator" />
 
         <receiver android:name=".RecipeWidgetProvider">
             <intent-filter>

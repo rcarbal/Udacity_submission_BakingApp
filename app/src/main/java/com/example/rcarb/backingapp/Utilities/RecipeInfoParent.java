@@ -17,11 +17,11 @@ public class RecipeInfoParent implements Parcelable{
 
     //Member variables for ingredients key and value.
     private boolean mIngredientArrayFound = false;
-    private List<RecipeIngredientsSub> mSubIngredientArray = new ArrayList<>();
+    private final List<RecipeIngredientsSub> mSubIngredientArray = new ArrayList<>();
 
     //Member variables for steps key and values.
     private boolean mStepsArrayFound = false;
-    private List<RecipeStepsSub> mStepsArray= new ArrayList<>();
+    private final List<RecipeStepsSub> mStepsArray= new ArrayList<>();
 
     //Member variables for servings.
     private double mServingsValue;
@@ -55,7 +55,7 @@ public class RecipeInfoParent implements Parcelable{
 
 
     //Getter and setter for ingredients boolean and array.
-    public void setIngredientsBoolean(boolean value){
+    public void setIngredientsBoolean(@SuppressWarnings("SameParameterValue") boolean value){
         mIngredientArrayFound = value;
     }
     public boolean getIngredientBoolean(){
@@ -72,7 +72,7 @@ public class RecipeInfoParent implements Parcelable{
 
 
     //Getter and setter for steps key and value.
-    public void setStepsArrayFound(boolean value){
+    public void setStepsArrayFound(@SuppressWarnings("SameParameterValue") boolean value){
         mStepsArrayFound = value;
     }
     public boolean getStepsArrayFound(){
@@ -120,6 +120,7 @@ public class RecipeInfoParent implements Parcelable{
 
     //Method to read parcelm for parcel
     private static boolean readBoolean(Parcel in){
+        //noinspection SimplifiableIfStatement
         if (in != null){
             return in.readInt() == 1 ? true: false;
         }
@@ -148,7 +149,7 @@ public class RecipeInfoParent implements Parcelable{
     }
     //Getter and setter for key id and key value.
 
-    protected RecipeInfoParent(Parcel in) {
+    private RecipeInfoParent(Parcel in) {
         mIdValue = in.readInt();
         mNameValue = in.readString();
         mIngredientArrayFound = readBoolean(in);
@@ -164,8 +165,7 @@ public class RecipeInfoParent implements Parcelable{
     public static final Creator<RecipeInfoParent> CREATOR = new Creator<RecipeInfoParent>() {
         @Override
         public RecipeInfoParent createFromParcel(Parcel in) {
-            RecipeInfoParent a = new RecipeInfoParent(in);
-            return a;
+            return new RecipeInfoParent(in);
         }
 
         @Override

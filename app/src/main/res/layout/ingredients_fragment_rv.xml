@@ -4,6 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/ingredients_rv_fragment"
-    android:layout_marginLeft="35dp">
+    android:layout_marginStart="35dp">
 
 </android.support.v7.widget.RecyclerView>

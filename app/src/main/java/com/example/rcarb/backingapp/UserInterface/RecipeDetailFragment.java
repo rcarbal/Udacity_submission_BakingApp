@@ -1,11 +1,7 @@
 package com.example.rcarb.backingapp.UserInterface;
 
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Loader;
 import android.database.Cursor;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,47 +11,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.rcarb.backingapp.LoadersAndAsyncTasks.GetRecipeStepsLoader;
 import com.example.rcarb.backingapp.R;
-import com.example.rcarb.backingapp.RecipeStepDetailsActivity;
 import com.example.rcarb.backingapp.Utilities.RecipeStepsSub;
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
-
-
-/**
- * Created by rcarb on 1/4/2018.
- */
 
 public class RecipeDetailFragment extends Fragment
         implements SingleRecipeDetailAdaptor.OnItemClicked {
 
-    RecipeDetailFragment.SendToActivity mSendCallback;
+    private RecipeDetailFragment.SendToActivity mSendCallback;
 
     public interface SendToActivity {
         void send(RecipeStepsSub recipe, int recipeId);
     }
 
     //Fragments imageView
-    ImageView mRecipeImage;
+    private ImageView mRecipeImage;
     //The recycler view thaty will be used.
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     //The fragments layoutmanager
-    LinearLayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     //Adaptor that will be used
-    SingleRecipeDetailAdaptor mAdaptor;
+    private SingleRecipeDetailAdaptor mAdaptor;
     //Manditory empty constuctor
-    Cursor mCursor;
+    private Cursor mCursor;
     private String mRecipeTitle;
     //Stored Steps
     ArrayList<RecipeStepsSub> mStoredSteps;

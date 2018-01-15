@@ -4,15 +4,9 @@ import android.app.Activity;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.rcarb.backingapp.Data.BackingContract;
-
-/**
- * Created by rcarb on 12/20/2017.
- */
-
 public class SetupParentRecyclerViewLoader extends AsyncTaskLoader<Cursor> {
 
     private static final String TAG = Activity.class.getName();

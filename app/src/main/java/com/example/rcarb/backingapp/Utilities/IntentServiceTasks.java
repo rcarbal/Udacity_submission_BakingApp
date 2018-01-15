@@ -8,14 +8,9 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.rcarb.backingapp.Data.BackingContract;
-import com.example.rcarb.backingapp.Data.RecipeWidgetService;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by rcarb on 12/11/2017.
- */
 
 //Tasks that this utility class taskes care of the different task that will be ran
 //by the intent service.

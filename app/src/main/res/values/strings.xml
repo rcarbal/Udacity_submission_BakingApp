@@ -14,7 +14,6 @@
     //MainActivity transition names
     <string name="selected_photo" translatable="false">selected_photo</string>
     <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
 
     //Widget Strings
     <string name="ph_widget_text" translatable="false">Garden is empty</string>

@@ -3,29 +3,21 @@ package com.example.rcarb.backingapp.LoadersAndAsyncTasks;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.database.MergeCursor;
 import android.util.Log;
 
 import com.example.rcarb.backingapp.Data.BackingContract;
 import com.example.rcarb.backingapp.Utilities.RecipeStepsSub;
 
 import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by rcarb on 12/29/2017.
- */
 
 public class GetRecipeStepsLoader extends AsyncTaskLoader<ArrayList<RecipeStepsSub>> {
 
-    private Context mContext;
-    private int mRecipeId;
+
+    private final int mRecipeId;
 
     public GetRecipeStepsLoader(Context context,
                                 int reciepeId) {
         super(context);
-        mContext = context;
         mRecipeId = reciepeId;
 
     }
@@ -39,9 +31,11 @@ public class GetRecipeStepsLoader extends AsyncTaskLoader<ArrayList<RecipeStepsS
     @Override
     public ArrayList<RecipeStepsSub> loadInBackground() {
 
+        @SuppressWarnings("UnusedAssignment")
         Cursor cursor = null;
         int recipeId = mRecipeId;
 
+        @SuppressWarnings("UnusedAssignment")
         String mSelectionClause = null;
         String[] mSelectionArgs = new String[1];
 
@@ -70,6 +64,7 @@ public class GetRecipeStepsLoader extends AsyncTaskLoader<ArrayList<RecipeStepsS
 
         ArrayList<RecipeStepsSub>  fullSteps = new ArrayList<>();
 
+        assert cursor != null;
         if (cursor.moveToFirst()){
             do {
                 RecipeStepsSub recipe = new RecipeStepsSub();
@@ -84,7 +79,7 @@ public class GetRecipeStepsLoader extends AsyncTaskLoader<ArrayList<RecipeStepsS
                 fullSteps.add(recipe);
             }while (cursor.moveToNext());
         }
-        mContext = null;
+        cursor.close();
         return  fullSteps;
     }
 }

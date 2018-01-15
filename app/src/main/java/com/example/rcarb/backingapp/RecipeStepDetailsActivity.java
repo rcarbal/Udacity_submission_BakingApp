@@ -6,7 +6,6 @@ import android.content.Loader;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -35,24 +34,20 @@ import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
 
-/**
- * Created by rcarb on 12/25/2017.
- */
-
 public class RecipeStepDetailsActivity extends AppCompatActivity {
 
-    RecipeStepsSub mCurrentStep;
+    private RecipeStepsSub mCurrentStep;
     private String mRecipeTitle;
     private int mRecipeId;
-    int mStepId;
-    int mIndexOfStep;
-    int mSizedOfArray;
+    private int mStepId;
+    private int mIndexOfStep;
+    private int mSizedOfArray;
     private boolean haveParsed;
     //If there is no more steps
     private boolean mHasNextStep;
     private boolean mHasPrevious;
 
-    ArrayList<RecipeStepsSub> mStoredSteps;
+    private ArrayList<RecipeStepsSub> mStoredSteps;
 
 
     //Loader variable
@@ -71,9 +66,9 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
     private int currentWindow;
     private long playbackPosition;
 
-    TextView textView;
-    Button mNextButton;
-    Button mPreviousButton;
+    private TextView textView;
+    private Button mNextButton;
+    private Button mPreviousButton;
 
 
     @Override
@@ -136,6 +131,7 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
     //Gets the passed in intent
     private RecipeStepsSub getIntentsInfo() {
         Bundle intent = getIntent().getExtras();
+        assert intent != null;
         RecipeStepsSub recipeStepsSub = intent.getParcelable("step_info");
         mRecipeTitle = intent.getString("recipe_title");
         mRecipeId = intent.getInt("recipe_id");
@@ -192,6 +188,7 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
         for (int i = 0; i < mStoredSteps.size(); i++) {
             int id = mStoredSteps.get(i).getIdSteps();
             int current = mStepId;
+            //noinspection StatementWithEmptyBody
             if (id == current) {
                 return i;
             } else {
@@ -244,12 +241,11 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
         ExtractorsFactory extractorsFactory =
                 new DefaultExtractorsFactory();
 
-        ExtractorMediaSource mediaSource = new ExtractorMediaSource(uri,
+        return new ExtractorMediaSource(uri,
                 datasourceFactory,
                 extractorsFactory,
                 null,
                 null);
-        return mediaSource;
     }
 
     //Creates full screen if the screen configuration is landscape.
@@ -265,7 +261,7 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
 
 
     //When next button is pressed.
-    public void parseForSteps() {
+    private void parseForSteps() {
         LoaderManager loaderManager = getLoaderManager();
         Loader<ArrayList<RecipeStepsSub>> ld = loaderManager.getLoader(GET_RECIPE_STEPS);
 
@@ -286,7 +282,7 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
                 //Get the next index
                 int nextIndex = getIndexOfCurrentStep() + 1;
                 //Get next Recipe.
-                RecipeStepsSub next = mStoredSteps.get(nextIndex);
+                @SuppressWarnings("UnnecessaryLocalVariable") RecipeStepsSub next = mStoredSteps.get(nextIndex);
                 mCurrentStep = next;
                 //Initialize current step
                 initializePlayer(mCurrentStep);
@@ -321,7 +317,6 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
             initializePlayer(previous);
             mStepId = mCurrentStep.getIdSteps();
             setupUi();
-            ;
             mIndexOfStep = getIndexOfCurrentStep();
         }
         //If you reach the ned of the previous.
@@ -346,12 +341,6 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
         setTitle(mRecipeTitle + ": " + mCurrentStep.getShortDescriptionSteps());
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
 
     @Override
     protected void onResume() {
@@ -391,7 +380,7 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
     // <---------------------Loader calbacks ---------------------->
 
     //Loader to change when button is clicked.
-    LoaderManager.LoaderCallbacks<ArrayList<RecipeStepsSub>> getOtherSteps =
+    private final LoaderManager.LoaderCallbacks<ArrayList<RecipeStepsSub>> getOtherSteps =
             new LoaderManager.LoaderCallbacks<ArrayList<RecipeStepsSub>>() {
                 @Override
                 public Loader<ArrayList<RecipeStepsSub>> onCreateLoader(int id, Bundle args) {
@@ -407,6 +396,7 @@ public class RecipeStepDetailsActivity extends AppCompatActivity {
                     }
                     mStoredSteps = data;
                     haveParsed = true;
+                    assert mStoredSteps != null;
                     mSizedOfArray = mStoredSteps.size();
                     setButtons();
 

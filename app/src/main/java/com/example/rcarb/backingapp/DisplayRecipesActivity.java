@@ -18,18 +18,15 @@ import com.example.rcarb.backingapp.LoadersAndAsyncTasks.SetupChildRecipeAsyncTa
 import com.example.rcarb.backingapp.UserInterface.SingleRecipeDetailAdaptor;
 import com.example.rcarb.backingapp.Utilities.RecipeStepsSub;
 
-/**
- * Created by rcarb on 12/21/2017.
- */
-
 public class DisplayRecipesActivity extends AppCompatActivity
         implements SingleRecipeDetailAdaptor.OnItemClicked{
 
     private static final String TAG = Activity.class.getName();
-;
     //get the recycler view
+    @SuppressWarnings("WeakerAccess")
     RecyclerView mRecyclerView;
     //get the layout manager
+    @SuppressWarnings("WeakerAccess")
     LinearLayoutManager mLayoutManager;
     //Recipe Id memeber variable.
     private int mRecipeId;
@@ -73,6 +70,7 @@ public class DisplayRecipesActivity extends AppCompatActivity
         int recipeId = intent.getIntExtra("recipe_id", -1);
         mRecipeTitle = intent.getStringExtra("recipe_name");
         setTitle(mRecipeTitle);
+        //noinspection StatementWithEmptyBody
         if (recipeId == -1){
             //TODO intent wasnt passed through
         }
@@ -121,6 +119,7 @@ public class DisplayRecipesActivity extends AppCompatActivity
 
     //  <------------------- Loader callbacks-------------------------->
     //Load recycler view loader
+    @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
     LoaderManager.LoaderCallbacks<Cursor> loadRecyclerView =
         new LoaderManager.LoaderCallbacks<Cursor>() {
 

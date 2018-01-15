@@ -4,10 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by rcarb on 12/14/2017.
- */
-
+@SuppressWarnings("WeakerAccess")
 public class SQLDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABSE_NAME ="BakingAppRecipes.db";

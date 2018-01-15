@@ -1,7 +1,6 @@
 package com.example.rcarb.backingapp.UserInterface;
 
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,10 +15,7 @@ import com.example.rcarb.backingapp.Utilities.RecipeIngredientsSub;
 
 import java.util.ArrayList;
 
-/**
- * Created by rcarb on 1/8/2018.
- */
-
+@SuppressWarnings("FieldCanBeLocal")
 public class IngredientsDetailFragment extends Fragment {
 
     //Recycler view

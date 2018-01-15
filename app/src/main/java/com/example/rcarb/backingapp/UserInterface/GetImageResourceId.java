@@ -3,13 +3,11 @@ package com.example.rcarb.backingapp.UserInterface;
 //Convinience class that returns the id of an image, following the procedure
 //in the Udacity course on widgets.
 
-import android.content.res.Resources;
-
 import com.example.rcarb.backingapp.R;
 
 public class GetImageResourceId {
     public static int getImgaeId(int recipeId) {
-                   int recipeIdvalue = -1;
+                   int recipeIdvalue;
             switch (recipeId) {
                 case 1:
                     recipeIdvalue = R.drawable.nutellapie;

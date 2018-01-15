@@ -3,16 +3,13 @@ package com.example.rcarb.backingapp.Data;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-/**
- * Created by rcarb on 12/14/2017.
- */
-
 public class BackingContract {
 
     //Uri that will be used by the URI Matcher.
     public static final String AUTHORITY = "com.example.rcarb.backingapp";
 
     //Base content uri that will be the start for accessing our provider.
+    @SuppressWarnings("WeakerAccess")
     public final static Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     //String for accessing the different tables.

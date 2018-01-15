@@ -1,14 +1,12 @@
 package com.example.rcarb.backingapp.LoadersAndAsyncTasks;
 
+import android.annotation.SuppressLint;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-/**
- * Created by rcarb on 12/11/2017.
- */
-
+@SuppressLint("StaticFieldLeak")
 public class CheckConnectionLoader extends AsyncTaskLoader<Boolean> {
 
     private Context mContext;
@@ -21,8 +19,10 @@ public class CheckConnectionLoader extends AsyncTaskLoader<Boolean> {
     public Boolean loadInBackground() {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        @SuppressWarnings("ConstantConditions")
         NetworkInfo activeNetwork= cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        @SuppressWarnings("UnnecessaryLocalVariable") boolean
+                isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         return isConnected;
     }
 

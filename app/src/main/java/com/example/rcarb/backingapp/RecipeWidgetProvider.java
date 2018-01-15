@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
@@ -19,6 +18,7 @@ import com.example.rcarb.backingapp.Utilities.RecipeInfoParent;
  */
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
+    @SuppressWarnings("WeakerAccess")
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int imgRes, int appWidgetId, RecipeInfoParent parent) {
 

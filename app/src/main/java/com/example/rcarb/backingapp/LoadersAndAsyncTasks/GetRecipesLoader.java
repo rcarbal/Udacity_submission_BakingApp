@@ -1,5 +1,6 @@
 package com.example.rcarb.backingapp.LoadersAndAsyncTasks;
 
+import android.annotation.SuppressLint;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
@@ -16,11 +17,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
+@SuppressLint("StaticFieldLeak")
 public class GetRecipesLoader extends AsyncTaskLoader<ArrayList<RecipeInfoParent>> {
 
 
     private static final String TAG = "MainActivity";
 
+    @SuppressWarnings("CanBeFinal")
     private Context mContext;
 
 
@@ -49,8 +52,8 @@ public class GetRecipesLoader extends AsyncTaskLoader<ArrayList<RecipeInfoParent
             //TODO need to setup a proper response for  no JSON respone String.
         }
 
-        /**
-         * Now we need to check what kind of Json the String contains.
+        /*
+          Now we need to check what kind of Json the String contains.
          */
         String typeOfJson = JsonUtilities.jsonChecker(jsonString);
         ArrayList<RecipeInfoParent> allRecipes = null;
@@ -69,7 +72,7 @@ public class GetRecipesLoader extends AsyncTaskLoader<ArrayList<RecipeInfoParent
                 //TODO Loaders attempt to get JSON data from JSONArray.
             }
         }
-
+        mContext = null;
         return allRecipes;
     }
 

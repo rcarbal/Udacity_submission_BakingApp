@@ -12,10 +12,6 @@ import android.widget.TextView;
 import com.example.rcarb.backingapp.Data.BackingContract;
 import com.example.rcarb.backingapp.R;
 
-/**
- * Created by rcarb on 12/19/2017.
- */
-
 public class MainRecipeAdaptor extends RecyclerView.Adapter<MainRecipeAdaptor.CardViewHolder> {
 
     private final Cursor mCursor;
@@ -45,6 +41,7 @@ public class MainRecipeAdaptor extends RecyclerView.Adapter<MainRecipeAdaptor.Ca
         boolean immediatelyAttached = false;
 
         //Construct the view
+        @SuppressWarnings("ConstantConditions")
         View view = layoutInflater.inflate(viewToBeInflated, parent, immediatelyAttached);
         int viewHeight = parent.getMeasuredHeight() / 2;
         view.setMinimumHeight(viewHeight);

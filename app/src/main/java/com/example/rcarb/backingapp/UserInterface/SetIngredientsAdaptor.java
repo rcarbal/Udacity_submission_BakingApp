@@ -1,5 +1,6 @@
 package com.example.rcarb.backingapp.UserInterface;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,13 +14,9 @@ import com.example.rcarb.backingapp.Utilities.RecipeIngredientsSub;
 
 import java.util.ArrayList;
 
-/**
- * Created by rcarb on 1/2/2018.
- */
-
 public class SetIngredientsAdaptor extends RecyclerView.Adapter<SetIngredientsAdaptor.IngredientHolder>{
 
-    private ArrayList<RecipeIngredientsSub> mIngredients;
+    private final ArrayList<RecipeIngredientsSub> mIngredients;
 
     public SetIngredientsAdaptor(ArrayList<RecipeIngredientsSub> ingredients) {
         super();
@@ -34,10 +31,12 @@ public class SetIngredientsAdaptor extends RecyclerView.Adapter<SetIngredientsAd
         boolean immediatelyAttached = false;
 
         //Construct the view
+        @SuppressWarnings("ConstantConditions")
         View view = layoutInflater.inflate(viewToBeInflated, parent, immediatelyAttached);
         return new IngredientHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(IngredientHolder holder, int position) {
         RecipeIngredientsSub recipeIngredientsSub = mIngredients.get(position);
@@ -63,7 +62,7 @@ public class SetIngredientsAdaptor extends RecyclerView.Adapter<SetIngredientsAd
     class IngredientHolder extends RecyclerView.ViewHolder{
 
         ImageView vectorImage;
-        TextView quantity;
+        final TextView quantity;
         TextView measure;
         TextView ingredient;
 

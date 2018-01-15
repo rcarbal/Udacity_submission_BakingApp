@@ -6,10 +6,6 @@ import android.util.Log;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by rcarb on 12/11/2017.
- */
-
 public class UriBuilderUtil {
 
     private static final String TAG = "MainActivity";

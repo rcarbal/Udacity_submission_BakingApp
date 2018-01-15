@@ -8,9 +8,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.RemoteViews;
-import android.widget.RemoteViewsService;
-import android.widget.Toast;
 
 import com.example.rcarb.backingapp.R;
 import com.example.rcarb.backingapp.RecipeWidgetProvider;
@@ -21,10 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
-
-/**
- * Created by rcarb on 1/9/2018.
- */
 
 public class RecipeWidgetService extends IntentService {
 
@@ -68,6 +61,7 @@ public class RecipeWidgetService extends IntentService {
         int imageres;
         //Get the values from the cursor
         RecipeInfoParent parent = new RecipeInfoParent();
+        assert cursor != null;
         if (cursor.moveToFirst()){
             do {
                 int recipeId = cursor.getInt(cursor.getColumnIndex(BackingContract.RecipeEntry.RECIPES_ID));
@@ -104,7 +98,9 @@ public class RecipeWidgetService extends IntentService {
             e.printStackTrace();
         }
         //Get the values from the cursor
-        List<String> recipes = new ArrayList<>();
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") List<String>
+                recipes = new ArrayList<>();
+        assert cursor != null;
         if (cursor.moveToFirst()){
             do {
                 String name = cursor.getString(cursor.getColumnIndex(BackingContract.RecipeEntry.RECIPES_NAME));

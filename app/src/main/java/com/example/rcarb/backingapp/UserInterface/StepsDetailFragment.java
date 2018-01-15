@@ -7,14 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.rcarb.backingapp.R;
 import com.example.rcarb.backingapp.Utilities.RecipeStepsSub;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -28,13 +26,6 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
-
-import java.util.ArrayList;
-
-/**
- * Created by rcarb on 1/8/2018.
- */
 
 public class StepsDetailFragment extends Fragment {
 
@@ -54,7 +45,7 @@ public class StepsDetailFragment extends Fragment {
 
     private TextView textView;
     private String mDescription;
-    RecipeStepsSub mCurrentStep;
+    private RecipeStepsSub mCurrentStep;
 
     //Default constructor
     public StepsDetailFragment() {
@@ -105,6 +96,7 @@ public class StepsDetailFragment extends Fragment {
         }
     }
     //Prepare the Media Source that will be used by the player instance.
+    @SuppressWarnings("UnnecessaryLocalVariable")
     private MediaSource buildMediaSource(Uri uri) {
         DataSource.Factory datasourceFactory =
                 new DefaultHttpDataSourceFactory("ua", BANDWITH_METER);

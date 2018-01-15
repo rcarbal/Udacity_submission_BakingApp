@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.rcarb.backingapp.MainActivity"
-    android:id="@+id/framelayout_tablet">
+    android:id="@+id/framelayout_tablet"
+    tools:ignore="InconsistentLayout,MergeRootFrame">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recycler_view">>
+        android:id="@+id/recycler_view">
 
     </android.support.v7.widget.RecyclerView>
 

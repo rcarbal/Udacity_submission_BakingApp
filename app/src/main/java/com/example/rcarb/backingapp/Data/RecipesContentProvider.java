@@ -6,36 +6,32 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-/**
- * Created by rcarb on 12/15/2017.
- */
-
 public class RecipesContentProvider extends ContentProvider {
 
     //Integer constants for each directory of table and single item of the table.
     //Recipe table integer constants.
-    public static final int RECIPES = 100;
-    public static final int RECIPE_WITH_ID = 101;
+    private static final int RECIPES = 100;
+    private static final int RECIPE_WITH_ID = 101;
 
     //Integer constants for ingredients table.
-    public static final int INGREDIENTS = 200;
-    public static final int INGREDIENTS_WITH_FOREIGN_KEY= 201;
+    private static final int INGREDIENTS = 200;
+    private static final int INGREDIENTS_WITH_FOREIGN_KEY= 201;
 
     //Integer constants for steps.
-    public static final int STEPS =300;
-    public static final int STEPS_WITH_FOREIGN_KEY =301;
+    private static final int STEPS =300;
+    private static final int STEPS_WITH_FOREIGN_KEY =301;
 
     //UirMatcher as a global variable.
-    public static UriMatcher sUriMatcher = buildUriMatcher();
+    @SuppressWarnings("CanBeFinal")
+    private static UriMatcher sUriMatcher = buildUriMatcher();
 
     //Helper UriMatcher helper function.
-    public static UriMatcher buildUriMatcher(){
+    private static UriMatcher buildUriMatcher(){
         //Empty matcher stated by the NO_MATCH
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         //Add the Uri that the matcher will recognize.
@@ -116,6 +112,7 @@ public class RecipesContentProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown ur: " + uri);
         }
         //Tell the cursor what content uri it was created for.
+        //noinspection ConstantConditions
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
@@ -174,6 +171,7 @@ public class RecipesContentProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
         }
         //Notify the resolver that a change has occurd in the particular uri.
+        //noinspection ConstantConditions
         getContext().getContentResolver().notifyChange(uri,null);
 
         return returnedUri;

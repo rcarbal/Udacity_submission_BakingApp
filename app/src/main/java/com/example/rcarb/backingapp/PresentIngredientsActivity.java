@@ -3,7 +3,6 @@ package com.example.rcarb.backingapp;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,17 +15,13 @@ import com.example.rcarb.backingapp.Utilities.RecipeIngredientsSub;
 
 import java.util.ArrayList;
 
-/**
- * Created by rcarb on 1/2/2018.
- */
-
 public class PresentIngredientsActivity extends AppCompatActivity {
-    String mRecipeTitle;
-    int mREcipeId;
+    private String mRecipeTitle;
+    private int mREcipeId;
     //RecyclerView
-    RecyclerView mRecyclerView;
-    LinearLayoutManager mLayoutManager;
-    ImageView mImageView;
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLayoutManager;
+    private ImageView mImageView;
 
     private static final int LOAD_RECYCLER_INGREDIENTS_LOADER = 7;
 
@@ -49,6 +44,7 @@ public class PresentIngredientsActivity extends AppCompatActivity {
 
     private void getIntentData(){
         Bundle extras = getIntent().getExtras();
+        //noinspection ConstantConditions
         mRecipeTitle = extras.getString("recipe_title", "Recipe");
         mREcipeId = extras.getInt("recipe_id");
         setTitle(mRecipeTitle+ ": Ingredients");
@@ -85,7 +81,7 @@ public class PresentIngredientsActivity extends AppCompatActivity {
     }
 
     //<-------------------------------Loader Callbacks------------------------------------------->
-    private LoaderManager.LoaderCallbacks<ArrayList<RecipeIngredientsSub>> getIngredients =
+    private final LoaderManager.LoaderCallbacks<ArrayList<RecipeIngredientsSub>> getIngredients =
             new LoaderManager.LoaderCallbacks<ArrayList<RecipeIngredientsSub>>() {
                 @Override
                 public Loader<ArrayList<RecipeIngredientsSub>> onCreateLoader(int id, Bundle args) {

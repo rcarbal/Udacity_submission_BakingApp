@@ -7,17 +7,12 @@ import android.util.Log;
 
 import com.example.rcarb.backingapp.Data.BackingContract;
 import com.example.rcarb.backingapp.Utilities.RecipeIngredientsSub;
-import com.example.rcarb.backingapp.Utilities.RecipeStepsSub;
 
 import java.util.ArrayList;
 
-/**
- * Created by rcarb on 1/2/2018.
- */
-
 public class GetIngredientsAsyncTaskLoader extends AsyncTaskLoader<ArrayList<RecipeIngredientsSub>> {
 
-    private int mRecipeId;
+    private final int mRecipeId;
 
     public GetIngredientsAsyncTaskLoader(Context context, int recipeId) {
         super(context);
@@ -34,9 +29,11 @@ public class GetIngredientsAsyncTaskLoader extends AsyncTaskLoader<ArrayList<Rec
 
     @Override
     public ArrayList<RecipeIngredientsSub> loadInBackground() {
+        @SuppressWarnings("UnusedAssignment")
         Cursor cursor = null;
         int recipeId = mRecipeId;
 
+        @SuppressWarnings("UnusedAssignment")
         String mSelectionClause = null;
         String[] mSelectionArgs = new String[1];
 
@@ -65,11 +62,10 @@ public class GetIngredientsAsyncTaskLoader extends AsyncTaskLoader<ArrayList<Rec
 
         ArrayList<RecipeIngredientsSub>  fullIngredients = new ArrayList<>();
 
+        assert cursor != null;
         if (cursor.moveToFirst()){
             do {
                 RecipeIngredientsSub recipe = new RecipeIngredientsSub();
-//                recipe.setIdSteps(cursor.getInt(cursor.getColumnIndex(
-//                        BackingContract.RecipeEntry.STEPS_ID)));
                 recipe.setQuantityValue(cursor.getDouble(cursor.getColumnIndex(
                         BackingContract.RecipeEntry.INGREDIENTS_QUANTITY)));
                 recipe.setMeasureValue(cursor.getString(cursor.getColumnIndex(
@@ -79,6 +75,7 @@ public class GetIngredientsAsyncTaskLoader extends AsyncTaskLoader<ArrayList<Rec
                 fullIngredients.add(recipe);
             }while (cursor.moveToNext());
         }
+        cursor.close();
         return  fullIngredients;
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -12,12 +11,6 @@ import com.example.rcarb.backingapp.Data.BackingContract;
 import com.example.rcarb.backingapp.MainActivity;
 import com.example.rcarb.backingapp.R;
 import com.example.rcarb.backingapp.UserInterface.GetImageResourceId;
-
-import static android.content.ContentValues.TAG;
-
-/**
- * Created by rcarb on 1/11/2018.
- */
 
 public class GridWidgetService extends RemoteViewsService {
 
@@ -27,6 +20,7 @@ public class GridWidgetService extends RemoteViewsService {
     }
 
     class GridRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
+        @SuppressWarnings("CanBeFinal")
         Context mContext;
         Cursor mCursor;
 
